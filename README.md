@@ -15,6 +15,24 @@
 When I entered care at age 9 and was discharged homeless at 24, I didn't just experience trauma — I discovered a mathematical proof of systemic failure. This repository is that proof, executable and undeniable.
 
 **π is irrational. So is the system. Let's use one to prove the other.**
+## Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/obinexus/pi
+cd pi
+
+# Build the engine
+make build
+
+# Run forensic computation
+make run
+
+# Generate legal claim
+make legal
+
+# Create Nsibidi design seal
+make design
 
 ---
 
