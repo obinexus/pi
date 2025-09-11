@@ -94,33 +94,19 @@ int get_pi_hex_digit(long n) {
     return (int)(s * 16.0);
 }
 
-void generate_design_output(int* pi_digits, int num_digits) { printf("----- Nsibidi-Inspired π Seal -----\n\n");
-    // Central Bent Heart
-    printf("       /\\       \n");
-    printf("      /  \\      \n");
-    printf("     /    \\     \n");
-    printf("    /      \\    \n");
-    printf("   /        \\   \n");
-    printf("  /          \\  \n");
-    printf(" /            \\ \n");
-    printf("/______________\\\n");
-    printf("   BENT HEART   \n");
-    printf("   Resilience   \n\n");
+/*
+void generate_legal_output_with_engine(PiEngine* engine, int num_digits) {
+    (void)num_digits; // Suppress unused parameter warning
 
-    // Arc with journey motifs
-    printf("Arc of Infinite Accountability:\n");
-    for (int i = 0; i < 12; i++) {
-        if (i < num_digits) {
-            char* symbol = digit_to_nsibidi(pi_digits[i]);
-            printf("%s ", symbol);
-            free(symbol);
-        }
-    }
-    printf("\n\n");
+    double magnitude = pi_engine_get_total_magnitude(engine);
 
-    printf("Unity Chant: \"Kwenu! Ya! Cha-Cha-Cha!\"\n");
-    printf("OBINexus: Heart Connection\n");
+    printf("**Claimant:** N.M. Okpala | **Respondent:** Thurrock Council\n");
+    printf("**Base:** %d violations | **Rate:** %.1f/year\n", BASE_VIOLATIONS, VIOLATION_CYCLES_PER_YEAR);
+    printf("**Magnitude:** %.2f | **Det(M):** %.2f | **Class:** U∞\n",
+           magnitude, pi_engine_get_determinant(engine));
+    printf("**Claim:** £%d per cycle | **Total:** ∞\n", 10000);
 }
+*/
 
 void generate_legal_output_with_engine(PiEngine* engine, int num_digits) {
     (void)num_digits; // Suppress unused parameter warning

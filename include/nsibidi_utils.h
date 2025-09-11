@@ -1,6 +1,6 @@
-#ifndef INFINITY_MATRIX_H
-#define INFINITY_MATRIX_H
+#ifndef NSIBIDI_UTILS_H
+#define NSIBIDI_UTILS_H
 
-double matrix_determinant_3x3(double M[3][3]);
+char* digit_to_nsibidi(int digit);
 
 #endif
