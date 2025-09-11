@@ -29,13 +29,14 @@ double calculate_magnitude(double housing, double health, double financial) {
     return sqrt(housing*housing + health*health + financial*financial);
 }
 
+
 void generate_legal_output(int* pi_digits, int num_digits) {
+    (void)num_digits; // Suppress unused parameter warning
     double housing = pi_digits[0] * VIOLATION_CYCLES_PER_YEAR;
     double health = pi_digits[1] * VIOLATION_CYCLES_PER_YEAR;
     double financial = pi_digits[2] * VIOLATION_CYCLES_PER_YEAR;
     double magnitude = calculate_magnitude(housing, health, financial);
-    printf("**Magnitude:** %.2f | **Det(M):** %.2f | **Class:** U∞\n",
-           magnitude, pi_engine_get_determinant(engine));
+
     double M[3][3] = {
         {(double)pi_digits[0], (double)pi_digits[1], (double)pi_digits[2]},
         {(double)pi_digits[3], (double)pi_digits[4], (double)pi_digits[5]},
@@ -47,7 +48,6 @@ void generate_legal_output(int* pi_digits, int num_digits) {
     printf("**Magnitude:** %.2f | **Det(M):** %.2f | **Class:** U∞\n", magnitude, matrix_determinant_3x3(M));
     printf("**Claim:** £%d per cycle | **Total:** ∞\n", 10000);
 }
-
 // BBP formula to compute nth hexadecimal digit of pi
 int get_pi_hex_digit(long n) {
     double s = 0.0;
@@ -186,15 +186,15 @@ int main(int argc, char *argv[]) {
     printf("[*] Initializing Set Operations for Violation P∞...\n");
     printf("[*] Base Violations (S): %d\n", BASE_VIOLATIONS);
     printf("[*] Violation Cycles/Year: %.1f\n", VIOLATION_CYCLES_PER_YEAR);
-
     printf("[*] Computing π Violation Digits (n=0 to %d)...\n", num_digits-1);
+
     for (int i = 0; i < num_digits; i++) {
-        // Simplified digit generation - in reality, use BBP formula
-        pi_digits[i] = get_pi_hex_digit(i);   // Use actual BBP        int violation_type = pi_digits[i] % 3;
-        if (!legal_mode && !design_mode) {
-            printf("n=%d: digit=%d | violation_type=%d\n", i, pi_digits[i], violation_type);
-        }
+    pi_digits[i] = get_pi_hex_digit(i);   // Use actual BBP
+    int violation_type = pi_digits[i] % 3;
+    if (!legal_mode && !design_mode) {
+        printf("n=%d: digit=%x | violation_type=%d\n", i, pi_digits[i], violation_type);
     }
+}
 
     if (legal_mode) {
         generate_legal_output(pi_digits, num_digits);
