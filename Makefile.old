@@ -54,9 +54,8 @@ run: build
 	@$(EXECUTABLE)
 
 # Generate legal claim
-legal: build
+legal: build | $(DESIGNDIR)
 	@echo "----- [OBINexus π] Legal Claim Generation -----"
-	@mkdir -p $(LEGALDIR)
 	@$(EXECUTABLE) -l > $(LEGALDIR)/manifest.tmp
 	@echo "# Claim $(shell date +%Y%m%d_%H%M%S)" > $(LEGALDIR)/CLAIM_$(shell date +%Y%m%d_%H%M%S).md
 	@echo "## Forensic Data" >> $(LEGALDIR)/CLAIM_$(shell date +%Y%m%d_%H%M%S).md
