@@ -94,19 +94,8 @@ int get_pi_hex_digit(long n) {
     return (int)(s * 16.0);
 }
 
-/*
-void generate_legal_output_with_engine(PiEngine* engine, int num_digits) {
-    (void)num_digits; // Suppress unused parameter warning
 
-    double magnitude = pi_engine_get_total_magnitude(engine);
-
-    printf("**Claimant:** N.M. Okpala | **Respondent:** Thurrock Council\n");
-    printf("**Base:** %d violations | **Rate:** %.1f/year\n", BASE_VIOLATIONS, VIOLATION_CYCLES_PER_YEAR);
-    printf("**Magnitude:** %.2f | **Det(M):** %.2f | **Class:** U∞\n",
-           magnitude, pi_engine_get_determinant(engine));
-    printf("**Claim:** £%d per cycle | **Total:** ∞\n", 10000);
-}
-*/
+/**
 
 void generate_legal_output_with_engine(PiEngine* engine, int num_digits) {
     (void)num_digits; // Suppress unused parameter warning
@@ -119,6 +108,8 @@ void generate_legal_output_with_engine(PiEngine* engine, int num_digits) {
            magnitude, pi_engine_get_determinant(engine));
     printf("**Claim:** £%d per cycle | **Total:** ∞\n", 10000);
 }
+
+**/
 
 int main(int argc, char *argv[]) {
     int num_digits = DEFAULT_DIGITS;
