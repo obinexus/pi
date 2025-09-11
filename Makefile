@@ -5,53 +5,92 @@ CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -O3 -I./include
 LDFLAGS = -lm
 TARGET = obinexus_pi
+
+# Directories
 SRCDIR = src
 INCDIR = include
 LEGALDIR = legal
 DESIGNDIR = design
 BUILDDIR = build
+OBJDIR = $(BUILDDIR)/obj
+BINDIR = $(BUILDDIR)/bin
 
-SRCS = $(SRCDIR)/main.c $(SRCDIR)/infinity_matrix.c $(SRCDIR)/nsibidi_utils.c
-OBJS = $(SRCS:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
-HEADERS = $(INCDIR)/infinity_matrix.h $(INCDIR)/nsibidi_utils.h
+# Source and object files
+SRCS = $(wildcard $(SRCDIR)/*.c)
+OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+HEADERS = $(wildcard $(INCDIR)/*.h)
+
+# Executable path
+EXECUTABLE = $(BINDIR)/$(TARGET)
 
 .PHONY: all build run legal design clean install uninstall
 
 all: build
 
-$(BUILDDIR):
-	@mkdir -p $(BUILDDIR)
+# Create directory structure
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.c $(HEADERS) | $(BUILDDIR)
+$(BINDIR):
+	@mkdir -p $(BINDIR)
+
+$(DESIGNDIR):
+	@mkdir -p $(DESIGNDIR)
+
+# Compile object files
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS) | $(OBJDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-build: $(TARGET)
-
-$(TARGET): $(OBJS)
+# Link executable
+$(EXECUTABLE): $(OBJS) | $(BINDIR)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
 
+# Convenience target
+build: $(EXECUTABLE)
+
+# Run the engine
 run: build
-	@echo "----- [OBINexus Pi] Running Forensic Computation -----"
-	@./$(TARGET)
+	@echo "----- [OBINexus π] Mathematical Justice Engine -----"
+	@$(EXECUTABLE)
 
-legal: build
-	@echo "----- [OBINexus Pi] Generating Legal Claim Framework -----"
-	@./$(TARGET) --legal > $(LEGALDIR)/violation_manifest.txt
-	@cat $(LEGALDIR)/CLAIM_TEMPLATE.md $(LEGALDIR)/violation_manifest.txt > $(LEGALDIR)/CLAIM_$(shell date +%Y%m%d).md
-	@echo "[+] Legal claim generated: $(LEGALDIR)/CLAIM_$(shell date +%Y%m%d).md"
+# Generate legal claim
+legal: build | $(DESIGNDIR)
+	@echo "----- [OBINexus π] Legal Claim Generation -----"
+	@$(EXECUTABLE) -l > $(LEGALDIR)/manifest.tmp
+	@echo "# Claim $(shell date +%Y%m%d_%H%M%S)" > $(LEGALDIR)/CLAIM_$(shell date +%Y%m%d_%H%M%S).md
+	@echo "## Forensic Data" >> $(LEGALDIR)/CLAIM_$(shell date +%Y%m%d_%H%M%S).md
+	@cat $(LEGALDIR)/manifest.tmp >> $(LEGALDIR)/CLAIM_$(shell date +%Y%m%d_%H%M%S).md
+	@rm -f $(LEGALDIR)/manifest.tmp
+	@echo "[+] Claim generated: $(LEGALDIR)/CLAIM_$(shell date +%Y%m%d_%H%M%S).md"
 
-design: build
-	@echo "----- [OBINexus Pi] Generating Nsibidi Design Seal -----"
-	@./$(TARGET) --design > $(DESIGNDIR)/pi_seal.txt
-	@echo "[+] Nsibidi design seal generated: $(DESIGNDIR)/pi_seal.txt"
+# Generate Nsibidi design
+design: build | $(DESIGNDIR)
+	@echo "----- [OBINexus π] Nsibidi Seal Generation -----"
+	@$(EXECUTABLE) -d > $(DESIGNDIR)/pi_seal_$(shell date +%Y%m%d).txt
+	@echo "[+] Design generated: $(DESIGNDIR)/pi_seal_$(shell date +%Y%m%d).txt"
 
+# Clean all build artifacts
 clean:
-	rm -rf $(BUILDDIR) $(TARGET) $(LEGALDIR)/violation_manifest.txt $(DESIGNDIR)/pi_seal.txt
+	@rm -rf $(BUILDDIR)
+	@rm -f $(LEGALDIR)/CLAIM_*.md
+	@rm -f $(DESIGNDIR)/*.txt
+	@echo "[+] Build artifacts cleaned"
 
+# Install to system
 install: build
-	@cp $(TARGET) /usr/local/bin/
-	@echo "[+] OBINexus π-Engine installed to /usr/local/bin/"
+	@sudo cp $(EXECUTABLE) /usr/local/bin/$(TARGET)
+	@echo "[+] Installed to /usr/local/bin/$(TARGET)"
 
+# Uninstall from system
 uninstall:
-	@rm -f /usr/local/bin/$(TARGET)
-	@echo "[+] OBINexus π-Engine uninstalled"
+	@sudo rm -f /usr/local/bin/$(TARGET)
+	@echo "[+] Uninstalled from system"
+
+# Development helpers
+.PHONY: debug release
+
+debug: CFLAGS += -g -O0 -DDEBUG
+debug: clean build
+
+release: CFLAGS += -O3 -DNDEBUG
+release: clean build
